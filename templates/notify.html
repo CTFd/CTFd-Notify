@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <h1 class="text-center">Send Notification</h1>
+</div>
+<div class="row">
+    <form id="thunderpush_notify" method="POST" action="/admin/plugins/notify/send">
+        <div class="form-group">
+            <label>Notification Message</label>
+            <input class="form-control" type="text" name="msg" placeholder="Notification Message">
+        </div>
+
+        <input id="nonce" name='nonce' type='hidden' value="{{ nonce }}">
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <button type="submit" class="btn btn-success text-center">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('#thunderpush_notify').submit(function(e){
+        e.preventDefault();
+        $.post(window.location.pathname, $(this).serialize(), function(data){
+            if (data == 1){
+                window.location.reload();
+            }
+        });
+    });
+</script>
+{% endblock %}

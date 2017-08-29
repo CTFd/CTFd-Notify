@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center">CTFd Notify</h1>
+
+{% if not (get_config('thunderpush_url')
+    and get_config('thunderpush_port')
+    and get_config('thunderpush_client_secret')
+    and get_config('thunderpush_server_secret')) %}
+
+<div class="row">
+    <form method="POST" id="thunderpush_settings">
+        <div class="col-md-6 col-md-offset-3">
+            <p class="text-center">Thunderpush Configuration</p>
+            <div class="form-group">
+                <div class="form-group">
+                    <label>Thunderpush URL</label>
+                    <input class="form-control" name='thunderpush_url' type='text' placeholder="Thunderpush URL">
+                </div>
+                <div class="form-group">
+                    <label>Thunderpush Port</label>
+                    <input class="form-control" name='thunderpush_port' type='text' placeholder="Thunderpush Port">
+                </div>
+                <div class="form-group">
+                    <label>Thunderpush Client Secret</label>
+                    <input class="form-control" name='thunderpush_client_secret' type='text' placeholder="Thunderpush Client Secret">
+                </div>
+                <div class="form-group">
+                    <label>Thunderpush Server Secret</label>
+                    <input class="form-control" name='thunderpush_server_secret' type='text' placeholder="Thunderpush Server Secret">
+                </div>
+            </div>
+            <input id="nonce" name='nonce' type='hidden' value="{{ nonce }}">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <button type="submit" class="btn btn-success text-center">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% else %}
+
+<div class="row">
+    <a href="/admin/plugins/notify/send">Send Notification</a>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('#thunderpush_settings').submit(function(e){
+        e.preventDefault();
+        $.post(window.location.pathname, $(this).serialize(), function(data){
+            if (data == 1){
+                window.location.reload();
+            }
+        });
+    });
+</script>
+{% endblock %}
