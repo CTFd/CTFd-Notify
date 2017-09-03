@@ -5,7 +5,8 @@ from flask import (
     redirect,
     jsonify,
     Blueprint,
-    url_for
+    url_for,
+    Response
 )
 
 from CTFd.models import db
@@ -30,8 +31,16 @@ def load(app):
             thunderpush_url = get_config('thunderpush_url')
             thunderpush_port = get_config('thunderpush_port')
             t = Thunder(apikey=client_secret, apisecret=server_secret, host=thunderpush_url, port=thunderpush_port)
-            print t.send_message_to_channel(channel='all_teams', message={'msg': msg})
+            print t.send_message_to_channel(channel='all_teams', message={'title': 'CTFd Notification', 'msg': msg})
             return '', 200
+
+    @notify.route('/notify/static/ctfd-notify.js', methods=['GET'])
+    def notify_static_generator():
+        client_secret = get_config('thunderpush_client_secret')
+        thunderpush_url = get_config('thunderpush_url')
+        thunderpush_port = get_config('thunderpush_port')
+        js = render_template('ctfd-notify.js', url=thunderpush_url, port=thunderpush_port, secret=client_secret)
+        return Response(js, mimetype='application/javascript')
 
     app.register_blueprint(notify)
     app.register_blueprint(notify_static, url_prefix='/notify')
