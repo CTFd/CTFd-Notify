@@ -26,12 +26,13 @@ def load(app):
             return render_template('notify.html')
         elif request.method == 'POST':
             msg = request.form.get('msg')
+            title = request.form.get('title')
             client_secret = get_config('thunderpush_client_secret')
             server_secret = get_config('thunderpush_server_secret')
             thunderpush_url = get_config('thunderpush_url')
             thunderpush_port = get_config('thunderpush_port')
             t = Thunder(apikey=client_secret, apisecret=server_secret, host=thunderpush_url, port=thunderpush_port)
-            print t.send_message_to_channel(channel='all_teams', message={'title': 'CTFd Notification', 'msg': msg})
+            t.send_message_to_channel(channel='all_teams', message={'title': title, 'msg': msg})
             return '', 200
 
     @notify.route('/notify/static/ctfd-notify.js', methods=['GET'])
@@ -44,3 +45,11 @@ def load(app):
 
     app.register_blueprint(notify)
     app.register_blueprint(notify_static, url_prefix='/notify')
+    scripts = [
+        "/notify/static/sockjs-0.3.4.min.js",
+        "/notify/static/thunderpush.js",
+        "/notify/static/push.min.js",
+        "/notify/static/ctfd-notify.js"
+    ]
+    for s in scripts:
+        utils.register_plugin_script(s)

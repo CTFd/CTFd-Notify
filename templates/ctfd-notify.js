@@ -41,6 +41,5 @@ if ( push_status === Push.Permission.DEFAULT ) {
         console.log(message);
         var message = html.format(message.title, message.msg);
         $('#notification_wrapper').append(message);
-
     });
 }
