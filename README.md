@@ -4,6 +4,8 @@ A CTFd plugin to communicate with a [ThunderPush](https://github.com/thunderpush
 
 It will also request browser notification permissions and fallback to an HTML based notification if the user doesn't grant the permission. 
 
+Requires: CTFd >= 1.0.4
+
 # Install
 
 1. Setup a ThunderPush Server and make note of the url, port, client\_secret, and server\_secret. 
