@@ -1,5 +1,7 @@
 # CTFd-Notify
 
+![](https://github.com/CTFd/CTFd-Notify/blob/master/screenshot.png?raw=true)
+
 A CTFd plugin to communicate with a [ThunderPush](https://github.com/thunderpush/thunderpush) server to send push notifications to users. 
 
 It will also request browser notification permissions and fallback to an HTML based notification if the user doesn't grant the permission. 
